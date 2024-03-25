@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="grnModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="grn_details">
+    <Key>
+      <PropertyRef Name="grn_number" />
+    </Key>
+    <Property Name="grn_number" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="date" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="supplier_id" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="grn_details1" Relationship="Self.FK_grn_details_grn_details" FromRole="grn_details" ToRole="grn_details1" />
+    <NavigationProperty Name="grn_details2" Relationship="Self.FK_grn_details_grn_details" FromRole="grn_details1" ToRole="grn_details" />
+  </EntityType>
+  <EntityType Name="grn_details_item">
+    <Key>
+      <PropertyRef Name="grn_number" />
+      <PropertyRef Name="item_id" />
+    </Key>
+    <Property Name="grn_number" Type="Int32" Nullable="false" />
+    <Property Name="item_id" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+  </EntityType>
+  <EntityType Name="item">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="quantity" Type="Int32" Nullable="false" />
+    <Property Name="description" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="supplier">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="city" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="contact_person" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="phone" Type="String" MaxLength="15" FixedLength="true" Unicode="true" />
+    <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <Association Name="FK_grn_details_grn_details">
+    <End Role="grn_details" Type="Self.grn_details" Multiplicity="1" />
+    <End Role="grn_details1" Type="Self.grn_details" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="grn_details">
+        <PropertyRef Name="grn_number" />
+      </Principal>
+      <Dependent Role="grn_details1">
+        <PropertyRef Name="grn_number" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="grnEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="grn_details" EntityType="Self.grn_details" />
+    <EntitySet Name="grn_details_item" EntityType="Self.grn_details_item" />
+    <EntitySet Name="items" EntityType="Self.item" />
+    <EntitySet Name="suppliers" EntityType="Self.supplier" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <AssociationSet Name="FK_grn_details_grn_details" Association="Self.FK_grn_details_grn_details">
+      <End Role="grn_details" EntitySet="grn_details" />
+      <End Role="grn_details1" EntitySet="grn_details" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
